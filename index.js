@@ -51,6 +51,17 @@ async function run() {
             const cursor = bookingCollection.find({ 'confirmation.email': req.query.email })
             const bookings = await cursor.toArray();
             res.json(bookings);
+        });
+
+        //Delete  Api 
+        app.delete('/services/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) }
+            console.log(query);
+            const result = await servicesCollection.deleteOne(query);
+            res.json(result);
+            console.log(result);
+
         })
 
         // //use post method by use keys
