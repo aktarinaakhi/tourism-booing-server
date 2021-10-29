@@ -1,7 +1,9 @@
 const express = require('express');
 const cors = require('cors');
 const { MongoClient } = require('mongodb');
-require('dotenv').config()
+require('dotenv').config();
+const ObjectId = require('mongodb').ObjectId;
+
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -15,42 +17,28 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 
 async function run() {
     try {
-        // await client.connect();
-        // console.log('database connect successful')
-        // const database = client.db("tourism");
-        // // const productCollection = database.collection("products");
+        await client.connect();
+        console.log('database connect successful')
+        const database = client.db("tourism");
+        const placesCollection = database.collection("places");
+        const ordersCollection = database.collection("orders");
 
-        // //GET API
-        // app.get('/products', async (req, res) => {
-        //     const cursor = productCollection.find({})
-        //     const page = req.query.page;
-        //     const size = parseInt(req.query.size);
+        //GET API
+        app.get('/places', async (req, res) => {
+            const cursor = placesCollection.find({})
+            const places = await cursor.toArray();
+            res.json(places);
 
-        //     let products;
-        //     const count = await cursor.count();
-
-        //     if (page) {
-        //         products = await cursor.skip(page * size).limit(size).toArray();
-        //     }
-        //     else {
-        //         products = await cursor.toArray();
-        //     }
-
-        //     res.json({
-        //         count,
-        //         products
-        //     });
-
-        // })
+        })
 
         // //use post method by use keys
 
-        // app.post('/products/byKeys', async (req, res) => {
+        // app.post('/places/byKeys', async (req, res) => {
         //     console.log(req.body)
         //     const keys = req.body;
         //     const query = { key: { $in: keys } }
-        //     const products = await productCollection.find(query).toArray();
-        //     res.json(products);
+        //     const places = await productCollection.find(query).toArray();
+        //     res.json(places);
         // })
     }
     finally {
