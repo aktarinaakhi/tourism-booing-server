@@ -23,20 +23,35 @@ async function run() {
         const servicesCollection = database.collection("services");
         const bookingCollection = database.collection("booking");
 
-        // GET API
+
+        // services GET API
         app.get('/services', async (req, res) => {
             const cursor = servicesCollection.find({})
             const services = await cursor.toArray();
             res.json(services);
         })
 
-        //POST api
+        // services POST api
 
         app.post('/services', async (req, res) => {
             const service = req.body;
             const result = await servicesCollection.insertOne(service);
             res.json(result);
         });
+
+        //booking post api
+        app.post('/bookings', async (req, res) => {
+            const booking = req.body;
+            const result = await bookingCollection.insertOne(booking);
+            res.json(result);
+        });
+
+        //booking get api
+        app.get('/bookings', async (req, res) => {
+            const cursor = bookingCollection.find({ 'confirmation.email': req.query.email })
+            const bookings = await cursor.toArray();
+            res.json(bookings);
+        })
 
         // //use post method by use keys
 
