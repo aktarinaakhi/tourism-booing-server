@@ -20,16 +20,23 @@ async function run() {
         await client.connect();
         console.log('database connect successful')
         const database = client.db("tourism");
-        const placesCollection = database.collection("places");
-        const ordersCollection = database.collection("orders");
+        const servicesCollection = database.collection("services");
+        const bookingCollection = database.collection("booking");
 
-        //GET API
-        app.get('/places', async (req, res) => {
-            const cursor = placesCollection.find({})
-            const places = await cursor.toArray();
-            res.json(places);
-
+        // GET API
+        app.get('/services', async (req, res) => {
+            const cursor = servicesCollection.find({})
+            const services = await cursor.toArray();
+            res.json(services);
         })
+
+        //POST api
+
+        app.post('/services', async (req, res) => {
+            const service = req.body;
+            const result = await servicesCollection.insertOne(service);
+            res.json(result);
+        });
 
         // //use post method by use keys
 
