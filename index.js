@@ -42,6 +42,8 @@ async function run() {
         //booking post api
         app.post('/bookings', async (req, res) => {
             const booking = req.body;
+            console.log(req.body)
+
             const result = await bookingCollection.insertOne(booking);
             res.json(result);
         });
@@ -54,14 +56,13 @@ async function run() {
         });
 
         //Delete  Api 
-        app.delete('/services/:id', async (req, res) => {
+        app.delete('/bookings/:id', async (req, res) => {
             const id = req.params.id;
             const query = { _id: ObjectId(id) }
             console.log(query);
-            const result = await servicesCollection.deleteOne(query);
+            const result = await bookingCollection.deleteOne(query);
             res.json(result);
             console.log(result);
-
         })
 
         // //use post method by use keys
