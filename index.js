@@ -24,7 +24,7 @@ async function run() {
         const bookingCollection = database.collection("booking");
 
 
-        // services GET API
+        // all services GET API
         app.get('/services', async (req, res) => {
             const cursor = servicesCollection.find({})
             const services = await cursor.toArray();
@@ -42,15 +42,13 @@ async function run() {
         //booking post api
         app.post('/bookings', async (req, res) => {
             const booking = req.body;
-            console.log(req.body)
-
             const result = await bookingCollection.insertOne(booking);
             res.json(result);
         });
 
-        //booking get api
+        //all booking get api
         app.get('/bookings', async (req, res) => {
-            const cursor = bookingCollection.find({ 'confirmation.email': req.query.email })
+            const cursor = bookingCollection.find({ 'email': req.query.email })
             const bookings = await cursor.toArray();
             res.json(bookings);
         });
@@ -59,21 +57,20 @@ async function run() {
         app.delete('/bookings/:id', async (req, res) => {
             const id = req.params.id;
             const query = { _id: ObjectId(id) }
-            console.log(query);
             const result = await bookingCollection.deleteOne(query);
             res.json(result);
-            console.log(result);
         })
 
-        // //use post method by use keys
+        // //get my order
 
-        // app.post('/places/byKeys', async (req, res) => {
+        // app.get('/bookings', async (req, res) => {
         //     console.log(req.body)
         //     const keys = req.body;
-        //     const query = { key: { $in: keys } }
+        //     const query = { email: { $in: keys } }
         //     const places = await productCollection.find(query).toArray();
         //     res.json(places);
         // })
+
     }
     finally {
         // await client.close();
