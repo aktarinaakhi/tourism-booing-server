@@ -22,6 +22,7 @@ async function run() {
         const database = client.db("tourism");
         const servicesCollection = database.collection("services");
         const bookingCollection = database.collection("booking");
+        const adminCollection = database.collection("admin");
 
 
         // all services GET API
@@ -52,6 +53,23 @@ async function run() {
             const bookings = await cursor.toArray();
             res.json(bookings);
         });
+
+
+        //admin post api
+        app.post('/admin', async (req, res) => {
+            const admin = req.body;
+            const result = await adminCollection.insertOne(admin);
+            res.json(result);
+        });
+
+        //admin get api
+
+        app.get('/admin', async (req, res) => {
+            const cursor = adminCollection.find({})
+            const bookings = await cursor.toArray();
+            res.json(bookings);
+        });
+
 
         //Delete  Api 
         app.delete('/bookings/:id', async (req, res) => {
