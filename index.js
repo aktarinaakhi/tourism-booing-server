@@ -48,8 +48,7 @@ async function run() {
 
         //all booking get api
         app.get('/bookings', async (req, res) => {
-            const cursor = servicesCollection.find({})
-            // const cursor = bookingCollection.find({ 'email': req.query.email })
+            const cursor = bookingCollection.find({})
             const bookings = await cursor.toArray();
             res.json(bookings);
         });
