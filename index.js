@@ -79,16 +79,20 @@ async function run() {
             res.json(result);
         })
 
-        // //get my order
-
-        // app.get('/bookings', async (req, res) => {
-        //     console.log(req.body)
-        //     const keys = req.body;
-        //     const query = { email: { $in: keys } }
-        //     const places = await productCollection.find(query).toArray();
-        //     res.json(places);
-        // })
-
+        //update booking status
+        app.put('/bookings/:id', async (req, res) => {
+            const id = req.params.id;
+            const updatedStatus = req.body;
+            const filter = { _id: ObjectId(id) }
+            const options = { upsert: true }
+            const updateDoc = {
+                $set: {
+                    status: updatedStatus.status
+                },
+            };
+            const result = await bookingCollection.updateOne(filter, updateDoc, options);
+            res.json(result);
+        });
     }
     finally {
         // await client.close();
