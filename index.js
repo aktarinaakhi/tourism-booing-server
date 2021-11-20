@@ -21,7 +21,7 @@ async function run() {
         console.log('database connect successful')
         const database = client.db("tourism");
         const servicesCollection = database.collection("services");
-        const ordersCollection = database.collection("orders");
+        const bookingCollection = database.collection("booking");
         const adminCollection = database.collection("admin");
 
 
@@ -40,18 +40,18 @@ async function run() {
             res.json(result);
         });
 
-        //orders post api
-        app.post('/orders', async (req, res) => {
-            const orders = req.body;
-            const result = await ordersCollection.insertOne(orders);
+        //booking post api
+        app.post('/bookings', async (req, res) => {
+            const booking = req.body;
+            const result = await bookingCollection.insertOne(booking);
             res.json(result);
         });
 
-        //all orders get api
-        app.get('/orders', async (req, res) => {
-            const cursor = ordersCollection.find({})
-            const orderss = await cursor.toArray();
-            res.json(orderss);
+        //all booking get api
+        app.get('/bookings', async (req, res) => {
+            const cursor = bookingCollection.find({})
+            const bookings = await cursor.toArray();
+            res.json(bookings);
         });
 
 
@@ -66,21 +66,21 @@ async function run() {
 
         app.get('/admin', async (req, res) => {
             const cursor = adminCollection.find({})
-            const orderss = await cursor.toArray();
-            res.json(orderss);
+            const bookings = await cursor.toArray();
+            res.json(bookings);
         });
 
 
         //Delete  Api 
-        app.delete('/orderss/:id', async (req, res) => {
+        app.delete('/bookings/:id', async (req, res) => {
             const id = req.params.id;
             const query = { _id: ObjectId(id) }
-            const result = await ordersCollection.deleteOne(query);
+            const result = await bookingCollection.deleteOne(query);
             res.json(result);
         })
 
-        //update orders status
-        app.put('/orderss/:id', async (req, res) => {
+        //update booking status
+        app.put('/bookings/:id', async (req, res) => {
             const id = req.params.id;
             const updatedStatus = req.body;
             const filter = { _id: ObjectId(id) }
@@ -90,7 +90,7 @@ async function run() {
                     status: updatedStatus.status
                 },
             };
-            const result = await ordersCollection.updateOne(filter, updateDoc, options);
+            const result = await bookingCollection.updateOne(filter, updateDoc, options);
             res.json(result);
         });
     }
